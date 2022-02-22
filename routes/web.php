@@ -16,3 +16,7 @@ use App\Http\Controllers\TaskController;
 */
 
 Route::get('/', [TaskController::class, 'index'])->name('task.index');
+
+Route::post('/', [TaskController::class, 'create'])->name('task.create');
+
+Route::patch('/{task}', [TaskController::class, 'update'])->name('task.update');

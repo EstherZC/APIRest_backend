@@ -14,18 +14,24 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $allTasks = Task::get();
-        return $allTasks; //view('home', compact('allTasks'));
+        return Task::get(); 
     }
 
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
+     * 
+     * Task default status=1 => not completed
      */
     public function create()
     {
-        //
+        $validate = request()->validate([
+            'name'=>'required',
+        ]);
+        $fields = (['name'=>$validate['name'], 'status'=>1]);
+        Task::create($fields);
+        return index();
     }
 
     /**
@@ -37,7 +43,12 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        //
+        $fields = request()->validate([
+            'name'=>'required',
+            'status'=>'required'
+        ]);
+        $task->update($fields);
+        return index();
     }
 
 }
