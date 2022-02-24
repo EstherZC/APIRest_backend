@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Models\Task;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,11 @@ class TaskController extends Controller
      */
     public function index()
     {
-        return Task::get(); 
+        $tasks = Task::get(); 
+        return response()->json([
+            'status'=> 200,
+            'tasks'=> $tasks
+        ]);
     }
 
     /**
@@ -26,12 +31,21 @@ class TaskController extends Controller
      */
     public function create()
     {
-        $validate = request()->validate([
-            'name'=>'required',
-        ]);
-        $fields = (['name'=>$validate['name'], 'status'=>1]);
-        Task::create($fields);
-        return index();
+        $name = request()->get('name');
+        if(isset($name) ){
+            $fields = (['name'=>$name, 'status'=>1]);
+            Task::create($fields);
+            $tasks = Task::get(); 
+            return response()->json([
+                'status'=> 200,
+                'tasks' => $tasks
+            ]);
+        }else{
+            return response()->json([
+                'status'=> -1,
+            ]);
+        }
+        
     }
 
     /**
@@ -41,14 +55,9 @@ class TaskController extends Controller
      * @param  \App\Models\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Task $task)
+    public function update(Request $request, $task)
     {
-        $fields = request()->validate([
-            'name'=>'required',
-            'status'=>'required'
-        ]);
-        $task->update($fields);
-        return index();
+       
     }
 
 }
