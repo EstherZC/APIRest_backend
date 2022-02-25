@@ -22,6 +22,13 @@ class TaskController extends Controller
         ]);
     }
 
+    public function token(){
+        $token = request()->session()->token();
+        return response()->json([
+            'status'=> 200,
+            'token'=> $token
+        ]);
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -43,6 +50,7 @@ class TaskController extends Controller
         }else{
             return response()->json([
                 'status'=> -1,
+                'tasks'=> []
             ]);
         }
         
@@ -55,9 +63,27 @@ class TaskController extends Controller
      * @param  \App\Models\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $task)
+    public function update()
     {
-       
+        $status = request()->get('status');
+        $idTask = request()->get('id');
+        $name = request()->get('name');
+        if(isset($status) && isset($idTask)&& isset($name))
+        {
+            Task::where('id', $idTask)
+            ->update(['status'=>$status]);
+            $tasks = Task::get(); 
+            return response()->json([
+                'status'=> 200,
+                'tasks' => $tasks
+            ]);
+            
+        }else{
+            return response()->json([
+                'status'=> -1,
+                'tasks'=> []
+            ]);
+        }
     }
 
 }

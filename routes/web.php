@@ -14,9 +14,10 @@ use App\Http\Controllers\TaskController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('/', [TaskController::class, 'index'])->name('task.index');
+
+Route::get('/token', [TaskController::class, 'token'])->name('task.token');
 
 Route::post('/', [TaskController::class, 'create'])->name('task.create');
 
-Route::patch('/{task}', [TaskController::class, 'update'])->name('task.update');
+Route::patch('/update', [TaskController::class, 'update'])->name('task.update');

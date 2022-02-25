@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\TaskController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -13,6 +13,12 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::get('/', [TaskController::class, 'index'])->name('task.index');
+
+Route::post('/', [TaskController::class, 'create'])->name('task.create');
+
+Route::patch('/update', [TaskController::class, 'update'])->name('task.update');
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
